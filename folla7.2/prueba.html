@@ -1,0 +1,28 @@
+function loadTextFile(url) {
+    return new Promise(function(resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          resolve(xhr.responseText);
+        } else {
+////          reject(new Error('Erro loading text file: ' + xhr.statusText));
+        }
+      };
+      xhr.onerror = function() {
+////        reject(new Error('Erro loading text file.'));
+      };
+      xhr.send();
+    });
+  }
+
+  //////////var loadButton = document.getElementById('load-button');
+  loadButton.addEventListener('click', function() {
+  //////  loadTextFile('sadasñldkasdaksdñ')
+      .then(function(content) {
+        console.log(content);
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+  });

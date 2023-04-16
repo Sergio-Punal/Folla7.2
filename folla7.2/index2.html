@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Fetch Test</title>
+</head>
+<body>
+	<button onclick="fetchText()">Click me</button>
+	<script>
+		function fetchText() {
+			fetch('test.txt')
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				return response.text();
+			})
+			.then(text => console.log(text))
+			.catch(error => console.error('Error:', error));
+		}
+	</script>
+</body>
+</html>

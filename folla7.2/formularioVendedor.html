@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Ejemplo de JavaScript</title>
+	<meta charset="UTF-8">
+</head>
+
+<body>
+	<form id="formulario1" action="formularioVendedor.html">
+		<label>Nome</label>
+		<input type="text" name="nome" id="nome"><br />
+		<label>Email</label>
+		<input type="text" name="email" id="email"><br />
+
+		<input type="submit" name="insertar" id="insertar"  onclick="return validarFormulario();"><br>
+	</form>
+	<!--  Listamos todos -->
+	<button name="listar" id="listar">Listamos todos</button>
+	<table class="table table-striped" id="tabla1"> </table>
+
+	<!--  ordenarEmail -->
+	<button name="ordenarEmail" id="ordenar">Ordenar por email</button>
+	<table class="table table-striped" id="tabla2"> </table>
+
+
+
+
+	<script>
+		/* Listamos todos */
+		document.getElementById('listar').addEventListener('click', listaTodos);
+		function listaTodos() {
+			fetch("listaVendedores.php")
+				.then(response => response.json())
+				.then(data => {
+					// console.log(data);
+					let cadea = '<tr><th>Nome</th><th>Email</th></tr>';
+					for (let vendedor of data) {
+						cadea += "<tr><td>" + vendedor.nome + "</td><td>" + vendedor.email + "</td></tr>";
+					}
+					document.getElementById("tabla1").innerHTML = cadea;
+				})
+				.catch(erro => { alert("houbo un erro no listado"); }
+				);
+		}
+
+
+		/* ordenarEmail */
+		document.getElementById('ordenar').addEventListener('click', ordenarEmail);
+		function ordenarEmail() {
+			fetch("ordenarEmail.php")
+				.then(response => response.json())
+				.then(data => {
+					// console.log(data);
+					let cadea = '<tr><th>Nome</th><th>Email</th></tr>';
+					for (let vendedor of data) {
+						cadea += "<tr><td>" + vendedor.nome + "</td><td>" + vendedor.email + "</td></tr>";
+					}
+					document.getElementById("tabla2").innerHTML = cadea;
+				})
+				.catch(erro => { alert("houbo un erro no listado"); }
+				);
+		}
+
+		/* Insertar vendedor */
+		document.getElementById('insertar').addEventListener('click', insertando);
+		function insertando() {
+			//COLLEMOS OS DATOS do FORMULARIO:
+			const datos = new URLSearchParams(new FormData(document.getElementById("formulario1")));
+			fetch("insertaVendedor.php", {
+				method: 'POST',  //INDICAMOS O MÉTODO DE ENVÍO E OS DATOS QUE ENVIAMOS
+				body: datos
+			})
+				.then(response => response.json())
+				.then(data => {
+					console.log(data);
+					if (data.resultado == 'OK')
+						alert("Rexistro inserido perfectamente");
+					else
+						alert("Problema inserindo rexistro");
+				})
+				.catch(erro => { alert("houbo un erro para conectar coa BBDD" + erro); }
+				);
+		}
+
+	
+
+
+
+
+
+
+
+	</script>
+</body>
+
+</html>
